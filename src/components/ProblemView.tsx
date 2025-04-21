@@ -26,6 +26,7 @@ export default function ProblemView({
       onCorrect(); // This function updates the total number of correct answers.
 
       // ✅ Clear red/green border and animation
+      // I think I can remove this below.
       if (inputRef.current) {
         inputRef.current.classList.remove("border-red-500", "animate-shake");
         inputRef.current.classList.add("border-green-500");
