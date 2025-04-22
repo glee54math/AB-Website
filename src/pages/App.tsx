@@ -5,11 +5,13 @@ import {
   generateSubtractionProblem,
   MathProblem,
 } from "../utils/problemGenerators";
+import Avatar from "../components/Avatar";
+import type { AvatarProps } from "../components/Avatar";
 
 function App() {
   const [correctCount, setCorrectCount] = useState(0);
   const [skill, setSkill] = useState<"addition" | "subtraction">("addition");
-
+  const [usersSkills, setUsersSkills] = useState<String[]>([]);
   const handleCorrectAnswer = () => {
     setCorrectCount((prev) => prev + 1);
   };
@@ -47,6 +49,7 @@ function App() {
       </div>
       <ProblemView generator={getGenerator()} onCorrect={handleCorrectAnswer} />
       <div className="mt-4">Correct Answers: {correctCount}</div>
+      {/* <Avatar correctCount={correctCount} skills={}/> */}
     </div>
   );
 }

@@ -1,12 +1,19 @@
 // src/components/SkillSelector.tsx
 
 import React from "react";
+import ProgressBar from "./ProgressBar";
 
 interface SkillSelectorProps {
-  skills: string[];
+  skills: Skill[];
+  // progress: ProgressBar;
   selectedSkill: string;
   onSelectSkill: (skill: string) => void;
 }
+
+export type Skill = {
+  name: string;
+  level: string;
+};
 
 const SkillSelector: React.FC<SkillSelectorProps> = ({
   skills,
@@ -22,8 +29,8 @@ const SkillSelector: React.FC<SkillSelectorProps> = ({
         className="border rounded p-2"
       >
         {skills.map((skill) => (
-          <option key={skill} value={skill}>
-            {skill}
+          <option key={skill.name} value={skill.name}>
+            {skill.name}
           </option>
         ))}
       </select>
