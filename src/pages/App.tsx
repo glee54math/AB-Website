@@ -1,26 +1,30 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import ProblemView from "../components/ProblemView";
 import {
   generateAdditionProblem,
   generateSubtractionProblem,
   MathProblem,
 } from "../utils/problemGenerators";
-import Avatar from "../components/Avatar";
-import type { AvatarProps } from "../components/Avatar";
+import User from "../components/User";
+import { skills } from "../components/User";
+import type { Skill } from "../components/SkillSelector";
 
 function App() {
   const [correctCount, setCorrectCount] = useState(0);
-  const [skill, setSkill] = useState<"addition" | "subtraction">("addition");
-  const [usersSkills, setUsersSkills] = useState<String[]>([]);
+  const [activeSkill, setActiveSkill] = useState<string>("Addition");
+  const [usersSkills, setUsersSkills] = useState<Skill[]>(skills);
+  const [pendingSkill, setPendingSkill] = useState<string>("Addition");
+  //setPendingSkill(activeSkill); // This will be important if/when we use localStorage or backend.
+
   const handleCorrectAnswer = () => {
     setCorrectCount((prev) => prev + 1);
   };
 
-  const getGenerator = (): (() => MathProblem) => {
+  const getProblemGenerator = (skill: string): (() => MathProblem) => {
     switch (skill) {
-      case "addition":
+      case "Addition":
         return generateAdditionProblem;
-      case "subtraction":
+      case "Subtraction":
         return generateSubtractionProblem;
       default:
         return generateAdditionProblem;
@@ -38,18 +42,34 @@ function App() {
         <label htmlFor="skill">Choose a skill: </label>
         <select
           id="skill"
-          value={skill}
-          onChange={(e) =>
-            setSkill(e.target.value as "addition" | "subtraction")
-          }
+          value={pendingSkill}
+          onChange={(e) => {
+            setPendingSkill(e.target.value);
+          }}
         >
-          <option value="addition">Addition</option>
-          <option value="subtraction">Subtraction</option>
+          {usersSkills.map((skill) => (
+            <option key={skill.name} value={skill.name}>
+              {skill.name}
+            </option>
+          ))}
         </select>
+
+        {activeSkill !== pendingSkill && (
+          <button
+            onClick={() => setActiveSkill(pendingSkill)}
+            className="ml-2 bg-blue-500 text-white px-2 py-1 rounded"
+          >
+            Change
+          </button>
+        )}
       </div>
-      <ProblemView generator={getGenerator()} onCorrect={handleCorrectAnswer} />
+      <ProblemView
+        problemType={activeSkill} // This should trigger a re-render if/when the user clicks the button
+        generator={() => getProblemGenerator(activeSkill)()}
+        onCorrect={handleCorrectAnswer}
+      />
       <div className="mt-4">Correct Answers: {correctCount}</div>
-      {/* <Avatar correctCount={correctCount} skills={}/> */}
+      <User correctCount={correctCount} />
     </div>
   );
 }

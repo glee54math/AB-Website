@@ -2,11 +2,13 @@ import { useState, useRef } from "react";
 import { MathProblem } from "../utils/problemGenerators";
 
 type ProblemViewProps = {
+  problemType: string;
   generator: () => MathProblem;
   onCorrect: () => void;
 };
 
 export default function ProblemView({
+  problemType,
   generator,
   onCorrect,
 }: ProblemViewProps) {

@@ -12,7 +12,7 @@ interface SkillSelectorProps {
 
 export type Skill = {
   name: string;
-  level: string;
+  accuracyLevel: number;
 };
 
 const SkillSelector: React.FC<SkillSelectorProps> = ({
