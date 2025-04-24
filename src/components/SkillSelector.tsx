@@ -1,7 +1,6 @@
 // src/components/SkillSelector.tsx
 
 import React from "react";
-import ProgressBar from "./ProgressBar";
 
 interface SkillSelectorProps {
   skills: Skill[];

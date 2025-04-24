@@ -5,12 +5,14 @@ type ProblemViewProps = {
   problemType: string;
   generator: () => MathProblem;
   onCorrect: () => void;
+  onIncorrect: () => void;
 };
 
 export default function ProblemView({
   problemType,
   generator,
   onCorrect,
+  onIncorrect,
 }: ProblemViewProps) {
   const [problem, setProblem] = useState<MathProblem>(generator());
   const [userAnswer, setUserAnswer] = useState("");
@@ -45,6 +47,7 @@ export default function ProblemView({
       }, 1250); // 1.25 sec
     } else {
       setIsWrong(true);
+      onIncorrect();
     }
   };
 
