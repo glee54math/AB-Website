@@ -7,7 +7,7 @@ const styles = {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
     // gap: "20px", // This creates a gap betwen each grid within the column
-    padding: "20px", // This creates a 20px border around all sides.
+    // padding: "20px", // This creates a 20px white border around all sides.
   },
 };
 

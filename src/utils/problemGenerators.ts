@@ -6,8 +6,8 @@ export interface MathProblem {
 }
 
 export function generateAdditionProblem(): MathProblem {
-  const a = Math.floor(Math.random() * 50);
-  const b = Math.floor(Math.random() * 50);
+  const a = Math.floor(Math.random() * 39)+10;
+  const b = Math.floor(Math.random() * 40)+10;
   return {
     topic: 'Addition of 2-Digit Nummbers',
     question: `${a} + ${b}`,
