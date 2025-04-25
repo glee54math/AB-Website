@@ -19,7 +19,7 @@ export default function NavbarWithModal() {
 
   const handleLogin = () => {
     setIsModalOpen(false);
-    navigate("/app");
+    navigate("/dashboard");
   };
 
   return (
@@ -83,7 +83,7 @@ export default function NavbarWithModal() {
                 onClick={handleLogin}
                 className="bg-orange-500 hover:bg-orange-600"
               >
-                Continue to App
+                Continue to Dashboard
               </Button>
             </div>
           </Dialog.Panel>

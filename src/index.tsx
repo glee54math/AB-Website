@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import AppRoutes from "routes"; // we'll create this
 import "./index.css";
-import App from "./pages/App";
+import App from "./pages/SkillCard";
 import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
