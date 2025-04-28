@@ -5,13 +5,10 @@ import { Button } from "../components/button";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Login from "./Login";
-// Next imports below will move to Login.tsx
-import { signInAnonymously } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function NavbarWithModal() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigateURLTo = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navItems = [
     "Home",
@@ -72,24 +69,19 @@ export default function NavbarWithModal() {
 
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
-            <Dialog.Title className="text-xl font-bold mb-4">
-              Sign Up / Sign In
-            </Dialog.Title>
-            {/* <p className="text-sm text-gray-600 mb-4">
-              This modal will contain sign-up and login forms later.
-            </p> */}
             <Login />
 
             <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+              {/* <Button variant="outline" onClick={() => setIsModalOpen(false)}>
                 Close
-              </Button>
-              <Button
+              </Button> */}
+
+              {/* <Button
                 onClick={handleLogin}
                 className="bg-orange-500 hover:bg-orange-600"
               >
                 Continue to Dashboard
-              </Button>
+              </Button> */}
             </div>
           </Dialog.Panel>
         </div>
