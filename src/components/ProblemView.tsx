@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { MathProblem } from "../utils/problemGenerators";
+import type { MathProblem } from "../utils/problemGenerators";
 
 type ProblemViewProps = {
   problemType: string;

@@ -9,7 +9,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigateURLTo = useNavigate();
-  const [signInOrSignUp, setSignInOrSignUp] = useState<"SignIn" | "SignUp">("SignIn");
+  const [signInOrSignUp, setSignInOrSignUp] = useState<"SignIn" | "SignUp">(
+    "SignIn"
+  );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -31,29 +33,39 @@ export default function Login() {
   };
 
   return (
-    <form onSubmit={handleLogin} className="space-y-6 p-6 w-[400px] border rounded-lg shadow-md mx-auto">
+    <form
+      onSubmit={handleLogin}
+      className="space-y-6 p-6 w-[400px] border rounded-lg shadow-md mx-auto"
+    >
       {/* Toggle SignIn / SignUp Buttons */}
-      <div className="relative flex h-12 bg-gray-200 rounded-full p-1 mb-6">
+      <div className="relative flex h-12 bg-gray-200 rounded-full p-1 mb-6 overflow-hidden">
+        {/* Blue sliding pill */}
         <div
-          className={`absolute top-1 left-1 h-10 w-1/2 bg-blue-500 rounded-full transition-all duration-300 ${
+          className={`absolute top-1 left-1 h-10 w-1/2 rounded-full transition-transform duration-300 bg-blue-500 z-0 ${
             signInOrSignUp === "SignUp" ? "translate-x-full" : ""
           }`}
         ></div>
+
+        {/* Sign In button */}
         <button
           type="button"
           onClick={() => setSignInOrSignUp("SignIn")}
-          className={`flex-1 z-10 text-center font-semibold ${
+          className={`flex-1 text-center font-semibold z-10 relative ${
             signInOrSignUp === "SignIn" ? "text-white" : "text-gray-700"
           }`}
+          style={{ backgroundColor: "transparent" }}
         >
           Sign In
         </button>
+
+        {/* Sign Up button */}
         <button
           type="button"
           onClick={() => setSignInOrSignUp("SignUp")}
-          className={`flex-1 z-10 text-center font-semibold ${
+          className={`flex-1 text-center font-semibold z-10 relative ${
             signInOrSignUp === "SignUp" ? "text-white" : "text-gray-700"
           }`}
+          style={{ backgroundColor: "transparent" }}
         >
           Sign Up
         </button>

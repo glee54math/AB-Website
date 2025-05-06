@@ -1,4 +1,3 @@
-// This Dashboard should display "App", which will be changed to "SkillCard"?
 import SkillCard from "./SkillCard";
 import { skills } from "../components/User";
 

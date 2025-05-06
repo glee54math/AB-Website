@@ -1,14 +1,15 @@
-// src/routes.tsx
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import App from "./pages/SkillCard";
+import Home from "./pages/LandingPage";
 import Dashboard from "./pages/Dashboard";
 
-export default function AppRoutes() {
+function App() {
   return (
     <Routes>
-      <Route path="/home" element={<LandingPage />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
+
+export default App;

@@ -3,11 +3,9 @@ import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Button } from "../components/button";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import Login from "./Login";
 
 export default function NavbarWithModal() {
-  const navigateURLTo = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navItems = [
@@ -17,11 +15,6 @@ export default function NavbarWithModal() {
     "For Teachers",
     "Pricing",
   ];
-
-  const handleLogin = () => {
-    setIsModalOpen(false);
-    navigateURLTo("/dashboard");
-  };
 
   return (
     <div>
@@ -55,8 +48,7 @@ export default function NavbarWithModal() {
           </Button>
         </div>
       </nav>
-
-      {/* Spacer for fixed navbar */}
+      {/* Spacer for under fixed navbar */}
       <div className="h-20" />
 
       {/* Modal */}
@@ -70,19 +62,6 @@ export default function NavbarWithModal() {
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-white rounded-2xl p-6 w-full max-w-md shadow-xl">
             <Login />
-
-            <div className="flex justify-between">
-              {/* <Button variant="outline" onClick={() => setIsModalOpen(false)}>
-                Close
-              </Button> */}
-
-              {/* <Button
-                onClick={handleLogin}
-                className="bg-orange-500 hover:bg-orange-600"
-              >
-                Continue to Dashboard
-              </Button> */}
-            </div>
           </Dialog.Panel>
         </div>
       </Dialog>

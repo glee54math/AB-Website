@@ -5,8 +5,8 @@ import {
   generateSubtractionProblem,
   generateMultiplicationProblem,
   generateDivisionProblem,
-  MathProblem,
 } from "../utils/problemGenerators";
+import type { MathProblem } from "../utils/problemGenerators";
 import User from "../components/User";
 import { skills } from "../components/User";
 import type { Skill } from "../components/SkillSelector";
