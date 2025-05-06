@@ -41,6 +41,7 @@ export default function SkillCard({ skillName }: SkillCardProps) {
   const handleCorrectAnswer = () => {
     setCorrectCount((prev) => prev + 1);
     setStreakCount((prev) => prev + 1);
+    // session(skill).correctCount++
   };
 
   const handleIncorrectAnswer = () => {
