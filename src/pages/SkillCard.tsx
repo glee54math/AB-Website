@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ReactSetter } from "react";
 import ProblemView from "../components/ProblemView";
 import {
   generateAdditionProblem,
@@ -15,6 +15,7 @@ import fireGif from "../assets/gifs/fire.gif";
 import { ResizableBox } from "react-resizable";
 import "react-resizable/css/styles.css";
 import { updateSkillProgress } from "../utils/writeUserData";
+import type { SkillData } from "./Dashboard";
 
 type SkillCardProps = {
   skillName: string;
@@ -22,27 +23,30 @@ type SkillCardProps = {
     numberCorrect: number;
     totalAttempted: number;
   };
-  userID: string;
+  updateSessionStats: (skillName: string, skillData: SkillData) => void;
 };
 
 export default function SkillCard({
   skillName,
   skillData,
-  userID,
+  updateSessionStats,
 }: SkillCardProps) {
   const [correctCount, setCorrectCount] = useState(0);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [streakCount, setStreakCount] = useState(0);
   const [activeSkill, setActiveSkill] = useState<string>(skillName);
-  const [usersSkills, setUsersSkills] = useState<Skill[]>(skills);
-  const [pendingSkill, setPendingSkill] = useState<string>(skillName);
-  const [numCorrectThisSession, setNumCorrectThisSession] = useState<{
-    skill: Skill;
-    count: number;
-  }>({
-    skill: skills[0],
-    count: 0,
-  });
+  // const [usersSkills, setUsersSkills] = useState<Skill[]>(skills);
+  // const [pendingSkill, setPendingSkill] = useState<string>(skillName);
+  const [numCorrectThisSessionBySkill, setNumCorrectThisSessionBySkill] =
+    useState<{
+      // This is written weird since it should be map[Skill] -> count; will fix later
+      skill: Skill;
+      count: number;
+    }>({
+      skill: skills[0],
+      count: 0,
+    });
+
   const baseWidth = 300;
   const baseHeight = 350;
   const [appSize, setAppSize] = useState({
@@ -56,19 +60,16 @@ export default function SkillCard({
   ); // Need to think about decoupling?
 
   const handleCorrectAnswer = () => {
-    setCorrectCount((prev) => prev + 1); // This may be redundant, but if I remove, then I need to make sure I remove it elsewhere.
+    setCorrectCount((prev) => prev + 1);
     setStreakCount((prev) => prev + 1);
-    setNumCorrectThisSession((prev) => ({
+    setNumCorrectThisSessionBySkill((prev) => ({
       ...prev,
       count: prev.count + 1,
     })); // add to number of correct answers. Need to make sure to send to database later. Need better place. For testing now, it's fine.
-    updateSkillProgress(
-      userID,
-      activeSkill,
-      numCorrectThisSession.count,
-      correctCount + incorrectCount
-    );
-    // session(skill).correctCount++
+    updateSessionStats(skillName, {
+      numberCorrect: correctCount + 1, // needs plus 1 beacuse setCorrectCount is called asynchronously and has not updated yet.
+      totalAttempted: correctCount + incorrectCount + 1,
+    });
   };
 
   const handleIncorrectAnswer = () => {
@@ -128,7 +129,7 @@ export default function SkillCard({
           }}
         >
           <h1 className="text-xl font-bold mb-2">{activeSkill}</h1>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label htmlFor="skill">Choose a skill: </label>
             <select
               id="skill"
@@ -152,7 +153,7 @@ export default function SkillCard({
                 Change
               </button>
             )}
-          </div>
+          </div> */}
           <ProblemView
             problemType={activeSkill} // This should trigger a re-render if/when the user clicks the button
             generator={() => getProblemGenerator(activeSkill)()}

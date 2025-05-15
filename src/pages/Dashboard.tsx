@@ -19,6 +19,9 @@ export type SkillData = {
 
 function Dashboard({ userID }: { userID: string }) {
   const [userSkills, setUserSkills] = useState<Record<string, SkillData>>({});
+  const [sessionStats, setSessionStats] = useState<Record<string, SkillData>>(
+    {}
+  ); // use with userSkills for live updating + pushing
 
   const getUserSkills = async () => {
     const docRef = doc(db, "users", userID);
@@ -27,9 +30,11 @@ function Dashboard({ userID }: { userID: string }) {
     if (docSnap.exists()) {
       const data = docSnap.data();
       setUserSkills(data.skills || {});
+      setSessionStats(data.skills || {});
     } else {
       console.warn("No document found for this user ID!");
       setUserSkills({});
+      setSessionStats({});
     }
   };
 
@@ -42,17 +47,42 @@ function Dashboard({ userID }: { userID: string }) {
     console.log(userSkills);
   }, [userSkills]);
 
+  function updateSessionStats(skillName: string, skillData: SkillData) {
+    setSessionStats((prev) => {
+      return {
+        ...prev,
+        [skillName]: {
+          numberCorrect:
+            prev[skillName].numberCorrect + skillData.numberCorrect,
+          totalAttempted:
+            prev[skillName].totalAttempted + skillData.totalAttempted,
+        },
+      };
+    });
+  }
+
+  // Need to write to database
+  // updateSkillProgress(
+  //   userID,
+  //   activeSkill,
+  //   numCorrectThisSessionBySkill.count,
+  //   correctCount + incorrectCount
+  // );
+  // // session(skill).correctCount++
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold">Welcome, {userID}!</h1>
       <div style={styles.dashboard}>
         {Object.entries(userSkills).map(([skillName, skillData]) => (
-          <SkillCard
-            key={skillName}
-            skillName={skillName}
-            skillData={skillData}
-            userID={userID}
-          />
+          <div key={skillName}>
+            <SkillCard
+              key={skillName}
+              skillName={skillName}
+              skillData={skillData}
+              updateSessionStats={updateSessionStats}
+            />
+          </div>
         ))}
       </div>
     </div>

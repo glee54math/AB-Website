@@ -5,7 +5,7 @@ export type UserProps = {
 };
 
 export const skills: Skill[] = [
-  { name: "Addition", accuracyLevel: 0.9 },
+  { name: "Addition", accuracyLevel: 0.0 },
   { name: "Subtraction", accuracyLevel: 0.0 },
   { name: "Multiplication", accuracyLevel: 0.0 },
   { name: "Division", accuracyLevel: 0.0 },
