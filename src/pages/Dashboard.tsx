@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import SkillCard from "./SkillCard";
-import { skills } from "../components/User";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const styles = {
   dashboard: {
@@ -10,16 +12,49 @@ const styles = {
   },
 };
 
-function Dashboard() {
-  console.log(skills);
+export type SkillData = {
+  numberCorrect: number;
+  totalAttempted: number;
+};
+
+function Dashboard({ userID }: { userID: string }) {
+  const [userSkills, setUserSkills] = useState<Record<string, SkillData>>({});
+
+  const getUserSkills = async () => {
+    const docRef = doc(db, "users", userID);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      setUserSkills(data.skills || {});
+    } else {
+      console.warn("No document found for this user ID!");
+      setUserSkills({});
+    }
+  };
+
+  //console.log(skills);
+  useEffect(() => {
+    getUserSkills();
+  }, [userID]);
+
+  useEffect(() => {
+    console.log(userSkills);
+  }, [userSkills]);
+
   return (
-    <div style={styles.dashboard}>
-      {skills.map((element, index) => (
-        <div key={index}>
-          <SkillCard skillName={element.name} />
-          <p>{element.name}</p>
-        </div>
-      ))}
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Welcome, {userID}!</h1>
+      <div style={styles.dashboard}>
+        {Object.entries(userSkills).map(([skillName, skillData]) => (
+          <SkillCard
+            key={skillName}
+            skillName={skillName}
+            skillData={skillData}
+            userID={userID}
+          />
+        ))}
+      </div>
     </div>
   );
 }

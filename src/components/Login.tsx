@@ -6,6 +6,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
+import { ensureUserDocumentExists } from "../utils/newUserSettings";
 
 export default function Login() {
   const navigateURLTo = useNavigate();
@@ -24,6 +25,7 @@ export default function Login() {
         console.log("Signed in with email/password");
       } else if (signInOrSignUp === "SignUp") {
         await createUserWithEmailAndPassword(auth, email, password);
+        ensureUserDocumentExists();
         console.log("Account Created Successfully.");
       }
       navigateURLTo("/dashboard");
