@@ -1,4 +1,4 @@
-import { useEffect, useState, ReactSetter } from "react";
+import { useEffect, useState } from "react";
 import ProblemView from "../components/ProblemView";
 import {
   generateAdditionProblem,

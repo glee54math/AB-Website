@@ -2,15 +2,8 @@ import { useEffect, useState } from "react";
 import SkillCard from "./SkillCard";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebase";
-
-const styles = {
-  dashboard: {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    // gap: "20px", // This creates a gap betwen each grid within the column
-    // padding: "20px", // This creates a 20px white border around all sides.
-  },
-};
+import AppSidebar from "../components/SideNavBar";
+import { SidebarProvider } from "../components/ui/sidebar";
 
 export type SkillData = {
   numberCorrect: number;
@@ -18,10 +11,12 @@ export type SkillData = {
 };
 
 function Dashboard({ userID }: { userID: string }) {
-  const [userSkills, setUserSkills] = useState<Record<string, SkillData>>({});
+  const [userSkills, setUserSkills] = useState<Record<string, SkillData>>({}); // [skillName, skillData]
   const [sessionStats, setSessionStats] = useState<Record<string, SkillData>>(
     {}
   ); // use with userSkills for live updating + pushing
+  const [sidebarIsOpen, setSideBarIsOpen] = useState(true);
+  const [activeSkillCard, setActiveSkillCard] = useState("");
 
   const getUserSkills = async () => {
     const docRef = doc(db, "users", userID);
@@ -71,21 +66,43 @@ function Dashboard({ userID }: { userID: string }) {
   // // session(skill).correctCount++
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold">Welcome, {userID}!</h1>
-      <div style={styles.dashboard}>
-        {Object.entries(userSkills).map(([skillName, skillData]) => (
-          <div key={skillName}>
-            <SkillCard
-              key={skillName}
-              skillName={skillName}
-              skillData={skillData}
-              updateSessionStats={updateSessionStats}
-            />
-          </div>
-        ))}
+    <SidebarProvider>
+      <div className="flex min-h-screen">
+        {sidebarIsOpen && (
+          <AppSidebar
+            userSkills={userSkills}
+            setActiveSkillCard={setActiveSkillCard}
+          />
+        )}
+        <main className="flex-1 p-6">
+          <h1 className="text-2xl font-bold">Welcome, {userID}!</h1>
+          {
+            <div className="flex flex-wrap gap-4 mt-6">
+              {
+                activeSkillCard && (
+                  <SkillCard
+                    key={activeSkillCard}
+                    skillName={activeSkillCard}
+                    skillData={userSkills[activeSkillCard]}
+                    updateSessionStats={updateSessionStats}
+                  />
+                )
+                /* {Object.entries(userSkills).map(([skillName, skillData]) => (
+              <div key={skillName} className="p-4">
+                <SkillCard
+                  key={skillName}
+                  skillName={skillName}
+                  skillData={skillData}
+                  updateSessionStats={updateSessionStats}
+                />
+              </div>
+            ))} */
+              }
+            </div>
+          }
+        </main>
       </div>
-    </div>
+    </SidebarProvider>
   );
 }
 
