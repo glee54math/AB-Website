@@ -108,7 +108,7 @@ export default function SkillCard({
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center">
       <ResizableBox
         width={appSize.width}
         height={appSize.height}
@@ -118,7 +118,7 @@ export default function SkillCard({
           setAppSize({ width: data.size.width, height: data.size.height });
         }}
         resizeHandles={["se"]}
-        className="bg-white rounded-xl shadow-xl p-4 overflow-hidden"
+        className="bg-white ring rounded-xl shadow-xl p-4 overflow-hidden"
       >
         <div
           style={{
