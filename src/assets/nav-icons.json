@@ -1,0 +1,41 @@
+{
+    "items": [
+    {
+        "title": "Home",
+        "url": "#",
+        "icon": "Home"
+    },
+    {
+        "title": "Store",
+        "url": "#",
+        "icon": "Inbox"
+    },
+    {
+        "title": "Profile",
+        "url": "#",
+        "icon": "Calendar"
+    },
+    {
+        "title": "Search",
+        "url": "#",
+        "icon": "Search"
+    },
+    {
+        "title": "Settings",
+        "url": "#",
+        "icon": "Settings"
+    }
+    ],
+
+    "navIcons": {
+        "Addition":
+        {
+            "level": "1",
+            "icon": "DiamondPlus"
+        },
+        "Subtraction": {
+            "level": "2",
+            "icon": "DiamondMinus"
+        }
+    }
+}

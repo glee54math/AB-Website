@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import * as Icons from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +9,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "../components/ui/sidebar";
+import icons from "../assets/nav-icons.json";
 import type { SkillData } from "../pages/Dashboard";
 import { useState } from "react";
 
@@ -17,71 +18,69 @@ interface AppSidebarProps {
   setActiveSkillCard: (skillName: string) => void;
 }
 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
-
 export default function AppSidebar({
   userSkills,
   setActiveSkillCard,
 }: AppSidebarProps) {
   // const [activeSkillCard, setActiveSkillCard] = useState("");
+  // type NavIconsMap = {
+  //   [key: string]: {
+  //     level: string;
+  //     icon: string;
+  //     color?: string;
+  //     textSize?: string;
+  //   };
+  // }; // consider looking into json2ts CLI
 
   return (
     <div className="w-64 min-h-screen bg-zinc-900 text-white">
       <Sidebar collapsible="offcanvas">
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Application</SidebarGroupLabel>
+            <SidebarGroupLabel>AutoMATHically Better</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
-                      <a href={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
-                      </a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-                {Object.entries(userSkills).map(([skillName, skillData]) => (
+                {icons.items.map((item) => {
+                  const LucideIcon =
+                    Icons[
+                      item.icon as keyof typeof Icons
+                    ]; /* Convert string to component */
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton asChild>
+                        <a href={item.url}>
+                          {LucideIcon && (
+                            <LucideIcon className="mr-2 h-4 w-4" />
+                          )}
+                          <span>{item.title}</span>
+                        </a>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+          <SidebarGroupLabel>Skills</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {Object.entries(userSkills).map(([skillName, skillData]) => {
+                const iconName = icons.navIcons[skillName]?.icon; // even with red underline, it works fine.
+                const LucideIcon =
+                  Icons[iconName as keyof typeof Icons]; /* string->Component */
+                return (
                   <SidebarMenuItem key={skillName}>
                     <SidebarMenuButton asChild>
                       <button onClick={() => setActiveSkillCard(skillName)}>
+                        {LucideIcon && <LucideIcon className="mr-4 h-6 w-6" />}
                         <span>{skillName}</span>
                       </button>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
         </SidebarContent>
       </Sidebar>
     </div>
